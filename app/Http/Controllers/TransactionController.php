@@ -8,6 +8,7 @@ use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use App\Models\BuktiTransfer;
 use App\Models\Reject;
+use App\Models\Kategori;
 use Illuminate\Support\Facades\Auth;
 use PDF;
 
@@ -15,13 +16,24 @@ use App\Models\Barang;
 
 class TransactionController extends Controller
 {
-    public function index()
-    {
+    public function index(Request $request)
+{
+    $status = $request->input('status');
+
+    if(isset($status)){
+            $transactions = Transaction::select('transactions.id', 'transactions.*', 'users.nama', 'bukti_transfer.status', 'bukti_transfer.gambar')
+                            ->join('users', 'users.id', '=', 'transactions.user_id')
+                            ->leftJoin('bukti_transfer', 'transactions.id', '=', 'bukti_transfer.transaction_id')
+                            ->where('bukti_transfer.status', '=', $status)
+                            ->orderBy('transactions.id', 'DESC')
+                            ->get();
+        } else {
         $transactions = Transaction::
-        select('transactions.id', 'transactions.*' ,'users.nama')
-        ->join('users', 'users.id', '=', 'transactions.user_id')
-        ->orderBy('transactions.id', 'DESC')
-        ->get();
+                select('transactions.id', 'transactions.*' ,'users.nama')
+                ->join('users', 'users.id', '=', 'transactions.user_id')
+                ->orderBy('transactions.id', 'DESC')
+                ->get();
+        }
 
         $transaction_id = [];
 
@@ -215,12 +227,15 @@ class TransactionController extends Controller
         $tgl_selesai = date('Y-m-d', strtotime($daterange[1]));
 
         $transactions = TransactionDetail::
-        select('transactions.id', 'transactions.order_id', 'transactions.no_hp', 'transactions.alamat', 'transactions.total', 'transactions.transaction_date', 'transaction_detail.qty', 'transaction_detail.price', 'barang.nama_barang')
+        select('transactions.id', 'transactions.order_id', 'transactions.no_hp', 'transactions.alamat', 'transactions.total', 'transactions.transaction_date', 'transaction_detail.qty', 'transaction_detail.price', 'barang.nama_barang', 'bukti_transfer.status')
         ->join('transactions', 'transactions.id', '=', 'transaction_detail.transaction_id')
         ->join('barang', 'barang.id', '=', 'transaction_detail.barang_id')
+        ->leftJoin('bukti_transfer', 'transactions.id', '=', 'bukti_transfer.transaction_id')
         ->where('transactions.transaction_date', '>=', $tgl_mulai)
         ->where('transactions.transaction_date', '<=', $tgl_selesai)
+        ->where('bukti_transfer.status', '=', 'acc')
         ->get();
+
 
         // return dd($transactions);
 
@@ -231,4 +246,5 @@ class TransactionController extends Controller
 
         return $pdf->stream('itsolutionstuff.pdf');
     }
+
 }

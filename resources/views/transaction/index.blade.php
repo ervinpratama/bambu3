@@ -9,34 +9,50 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <form action="{{ route('exportPDF')}}" method="POST">
                     @method('POST')
                     @csrf
                     <div class="row">
                         <div class="col-md-8">
-                            <input name="daterange" type="text" class="form-control">
+                            <input name="daterange" type="text" class="form-control form-control-sm">
                         </div>
                         <div class="col-md-4">
-                            <button type="submit" class="btn btn-primary">Export Data</button>
+                            <button type="submit" class="btn btn-primary btn-sm">Export Data</button>
                         </div>
                     </div>
                 </form>
             </div>
+            <div class="col-md-7">
+                <form action="" method="GET">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="">Filter by Status</label><br/>
+                    </div>
+                    <div class="col-md-7">
+                            <select name="status" id="byStatus" class="form-control form-control-sm">
+                                <option value="">All</option>
+                                <option value="acc">Acc</option>
+                                <option value="pending">Pending</option>
+                                <option value="dikirim">Dikirim</option>
+                                <option value="dibatalkan">Dibatalkan</option>
+                            </select>
+                           
+                       
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-success btn-sm w-100" type="submit">Filter</button>
+                    </div>
+                
+                
+                </div>
+            </form>
+            </div>
         </div>
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <table class="table table-bordered" id="data" width="100%" cellspacing="0">
             <thead>
               <tr>
                 <th>No</th>
-                <!-- <th>Order ID</th>
-                <th>Nama Lengkap</th>
-                <th>No HP</th>
-                <th>Alamat</th>
-                <th>Provinsi</th>
-                <th>Kab/Kota</th>
-                <th>Kec</th>
-                <th>Desa/Kel</th>
-                <th>Kode POS</th> -->
                 <th>Data</th>
                 <th width="5%">Bukti Transfer</th>
                 <th>Aksi</th>
@@ -47,16 +63,6 @@
                 @foreach ($transactions as $transaction)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <!-- <td>{{ $transaction->order_id }}</td>
-                    <td>{{ $transaction->nama }}</td>
-                    <td>{{ $transaction->no_hp }}</td>
-                    <td>{{ $transaction->alamat }}</td>
-                    <td>{{ $transaction->provinsi }}</td>
-                    <td>{{ $transaction->kabupaten_kota }}</td>
-                    <td>{{ $transaction->kecamatan }}</td>
-                    <td>{{ $transaction->desa_kelurahan }}</td>
-                    <td>{{ $transaction->kodepos }}</td> -->
-                    <!-- <td>Rp {{ number_format($transaction->total, 0,',','.') }}</td> -->
                     <td>
                         <div class="card my-2">
                             <div class="card-header">
@@ -186,11 +192,15 @@
 <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
 <script>
 $(document).ready(function(){
-    $('.lihat-bukti').click(function(){
+    $('#data').on('click', '.lihat-bukti', function() {
         let gambar = $(this).data('gambar')
         console.log(gambar);
 
         $('#bukti').attr('src', `bukti_transfer/${gambar}`)
-    })
-})
+    });
+
+
+    var table = $('#data').DataTable();
+});
+
 </script>

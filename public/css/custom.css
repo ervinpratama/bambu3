@@ -71,3 +71,29 @@
 .card-body text-center{
     color: black;
 }
+
+.category a {
+    text-decoration: none;
+    color: #000;
+}
+
+.category a:hover {
+    color: blue;
+}
+
+.category h5 {
+    padding-top:15px;
+    font-size:14px;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .filter-label {
+    margin-right: 10px;
+  }
+  

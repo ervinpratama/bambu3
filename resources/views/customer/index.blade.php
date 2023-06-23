@@ -7,7 +7,7 @@
     <hr/>
     <div class="row">
         @foreach ($kategori as $item)
-        <div class="col-md-2">
+        <div class="col-md-2 category">
             <a href="/customer/category/{{ $item->id }}">
                 <div class="card">
                     <div class="card-body text-center">

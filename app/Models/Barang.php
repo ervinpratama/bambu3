@@ -13,7 +13,7 @@ class Barang extends Model
 
 	protected $fillable = ['kode_barang', 'nama_barang', 'id_kategori', 'harga', 'jumlah', 'ukuran', 'foto'];
 
-	protected $appends = ['kode_barang'];
+	// protected $appends = ['kode_barang'];
 
 	public function kategori()
 	{
@@ -25,11 +25,11 @@ class Barang extends Model
 		return $this->belongsToMany(Transactions::class)->withPivot('jumlah');
 	}
 
-	public function getKodeBarangAttribute()
-    {
-        $kategori = $this->kategori->nama_kategori;
-        $nomorUrut = $this->id;
+	// public function getKodeBarangAttribute()
+    // {
+    //     $kategori = $this->kategori->nama_kategori;
+    //     $nomorUrut = $this->id;
 
-        return strtoupper(substr($kategori, 0, 3)) . $nomorUrut;
-    }
+    //     return strtoupper(substr($kategori, 0, 3)) . $nomorUrut;
+    // }
 }

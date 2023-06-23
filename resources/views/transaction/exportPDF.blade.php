@@ -60,7 +60,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="4">TOTAL</td>
+                <td colspan="5">TOTAL</td>
                 <td align="center">{{ $jumlah }}</td>
                 <td>Rp {{ number_format($total,0,',','.') }}</td>
             </tr>
